@@ -1,0 +1,74 @@
+<link rel="stylesheet" href="/css/home.css" />
+<div id="home-container">
+  <h1>Codeial \ <%=title%></h1>
+
+  <section id="feed-posts">
+    <h4>Posts</h4>
+    <% if(locals.user){%>
+    <form action="/posts/create" id="new-post-form" method="post">
+      <textarea
+        name="content"
+        id=""
+        cols="30"
+        rows="3"
+        placeholder="Comment here..."
+      >
+      </textarea>
+      <input type="submit" value="Post" />
+    </form>
+    <%}%>
+    <div id="posts-list-container">
+      <ul type="none">
+        <%for(post of posts){%> <%- include('_post') -%> <%}%>
+      </ul>
+    </div>
+  </section>
+  <section id="user-friends">
+    <% if(locals.user){%>
+    <h4>Friends</h4>
+    <%for(u of all_users){%>
+    <p>
+      <a href="/users/profile/<%=u.id%>"><%= u.name%></a>
+    </p>
+    <%}%> <%}%>
+  </section>
+  <%- include('_chat_box.ejs') %>
+
+  <!-- This section is just for web scraping demonstration purposes -->
+  <div>
+    <table border="2" id="web-scraping-table">
+      <tr>
+        <th>Name</th>
+        <th>ID</th>
+        <th>Friends</th>
+      </tr>
+      <tr>
+        <td>Rishabh</td>
+        <td>123</td>
+        <td>5</td>
+      </tr>
+      <tr>
+        <td>Aakas</td>
+        <td>234</td>
+        <td>5</td>
+      </tr>
+      <tr>
+        <td>Raghav</td>
+        <td>564</td>
+        <td>10</td>
+      </tr>
+      <tr>
+        <td>Gautam</td>
+        <td>322</td>
+        <td>9</td>
+      </tr>
+    </table>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+<script src="/js/chat_engine.js"></script>
+<% if (locals.user){ %>
+<script>
+  new ChatEngine("user-chat-box", "<%= locals.user.email %>");
+</script>
+<% } %>
